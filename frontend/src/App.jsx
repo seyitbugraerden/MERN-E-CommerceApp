@@ -6,17 +6,19 @@ import AuthPage from "./pages/AuthPage";
 import CartPage from "./pages/CartPage";
 import BlogPage from "./pages/BlogPage";
 import BlogDetails from "./components/Blogs/BlogDetails";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   return (
     <>
-      <HomePage />
+      {/* <HomePage />
       <ShopPage />
       <ContactPage />
       <AuthPage />
       <CartPage />
       <BlogPage />
-      <BlogDetails />
+      <BlogDetails /> */}
+      <ProductDetailsPage />
     </>
   );
 }

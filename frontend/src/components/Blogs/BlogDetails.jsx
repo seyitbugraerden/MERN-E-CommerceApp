@@ -1,3 +1,4 @@
+import Reviews from "../Reviews/Reviews";
 import "./BlogDetails.css";
 
 const BlogDetails = () => {
@@ -256,6 +257,7 @@ const BlogDetails = () => {
               </div>
             </form>
           </div>
+          <Reviews />
         </div>
       </div>
     </section>
