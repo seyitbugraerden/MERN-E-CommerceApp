@@ -11,7 +11,6 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 function App() {
   return (
     <>
-      <HomePage />
       {/* <HomePage />
       <ShopPage />
       <ContactPage />
@@ -19,7 +18,7 @@ function App() {
       <CartPage />
       <BlogPage />
       <BlogDetails /> */}
-      {/* <ProductDetailsPage /> */}
+      <ProductDetailsPage />
     </>
   );
 }

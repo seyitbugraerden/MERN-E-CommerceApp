@@ -3,7 +3,7 @@ import "./Slider.css";
 import { useState } from "react";
 
 const Sliders = () => {
-  const [currentSlide, setCurrentSlide] = useState(2);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   return (
     <section className="slider">

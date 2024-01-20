@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import Search from "../components/Modals/Search/Search";
 import Dialog from "../components/Modals/Dialog/Dialog";
+import Policy from "../components/Layouts/Policy";
 
 function MainLayout({ children }) {
   const [isSearchShow, setIsSearchShow] = useState(false);
@@ -26,6 +27,7 @@ function MainLayout({ children }) {
       <Dialog isDialogShow={isDialogShow} setIsDialogShow={setIsDialogShow} />
       <Search isSearchShow={isSearchShow} setIsSearchShow={setIsSearchShow} />
       {children}
+      <Policy />
       <Footer />
     </div>
   );
