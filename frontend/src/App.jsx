@@ -18,7 +18,7 @@ function App() {
       <CartPage />
       <BlogPage />
       <BlogDetails /> */}
-      <ProductDetailsPage />
+      <HomePage />
     </>
   );
 }
