@@ -19,6 +19,7 @@ function App() {
       <BlogPage />
       <BlogDetails /> */}
       <HomePage />
+      <CartPage />
     </>
   );
 }
