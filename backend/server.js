@@ -8,16 +8,18 @@ const dotenv = require("dotenv"); // dotenv npm install
 const app = express();
 const post = 5000;
 
-dotenv.config();
+dotenv.config(); //dotenv config dosyamızı server'a import etik.
 
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URl);
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("connected");
   } catch (error) {
     throw error;
   }
 };
+
+// Sayfada çok fazla get - update - post gibi fonksiyon olacağı için bunları tek bir yere yığmak istemiyoruz. Bu yüzden "Routes" klasörü oluşturuyoruz.
 
 app.get("/", (req, res) => {
   res.send("Hello Express JS");
