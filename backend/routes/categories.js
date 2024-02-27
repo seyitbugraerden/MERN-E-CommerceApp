@@ -9,4 +9,5 @@ router.get("/", async (req, res) => {
   res.send("Kategoriler Getirildi");
 });
 
+//export etmemiz gerekli!
 module.exports = router;

@@ -6,6 +6,7 @@ const express = require("express"); // express npm install
 const mongoose = require("mongoose"); // mongoose npm install
 const dotenv = require("dotenv"); // dotenv npm install
 const app = express();
+const mainRoute = require("./routes/index");
 const post = 5000;
 
 dotenv.config(); //dotenv config dosyamızı server'a import etik.
@@ -20,16 +21,17 @@ const connect = async () => {
 };
 
 // Sayfada çok fazla get - update - post gibi fonksiyon olacağı için bunları tek bir yere yığmak istemiyoruz. Bu yüzden "Routes" klasörü oluşturuyoruz.
+// app.get("/", (req, res) => {
+//   res.send("Hello Express JS");
+// });
+// app.get("/api", (req, res) => {
+//   res.send("Hello I came from API");
+// });
+// app.get("/yarra", (req, res) => {
+//   res.send("Hello I came from API");
+// });
 
-app.get("/", (req, res) => {
-  res.send("Hello Express JS");
-});
-app.get("/api", (req, res) => {
-  res.send("Hello I came from API");
-});
-app.get("/yarra", (req, res) => {
-  res.send("Hello I came from API");
-});
+app.use("/api", mainRoute);
 
 app.listen(post, () => {
   connect(); //connect fonsiyonu listen içerisinde yazılıyor.
