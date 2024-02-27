@@ -31,6 +31,9 @@ const connect = async () => {
 //   res.send("Hello I came from API");
 // });
 
+//Herhangi bir api sayfaya ulaştığında json şeklinde geleceği için veriyi parse etmeliyiz. ! middlewares !
+app.use(express.json());
+
 app.use("/api", mainRoute);
 
 app.listen(post, () => {
