@@ -63,5 +63,19 @@ router.put("/:categoryId", async (req, res) => {
     res.status(500).json({ error: "Server Status" });
   }
 });
+// Yazılmış bir kategoriyi silelim
+router.delete("/:categoryId", async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const deletedCategory = await Category.findOneAndDelete(categoryId); // derste findIdAndDelete yazıyor.
+    if (!deletedCategory) {
+      return res.status(404).json({ error: "Not Found" });
+    }
+    res.status(200).json(deletedCategory);
+  } catch (error) {
+    res.status(500).json({ error: "Server Status" });
+  }
+});
+
 //export etmemiz gerekli!
 module.exports = router;
