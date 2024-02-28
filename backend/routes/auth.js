@@ -11,7 +11,7 @@ const generateRandomAvatar = () => {
   return `https://i.pravatar.cc/300?img=${randomAvatar}`;
 };
 
-// Kullanıcı Oluşturma ( Create - Register)
+// Kullanıcı Oluşturma ( Create - Register) auth/register
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password, role, avatar } = req.body;
@@ -36,8 +36,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Kullanıcı Girişi (Login)
-
+// Kullanıcı Girişi (Login) auth/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -45,7 +44,17 @@ router.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).json("Invalid E-Mail");
     }
-    res.status(200).json("OK");
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json("Invalid Password");
+    }
+    res.status(200).json({
+      id: user._id,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+      avatar: user.avatar,
+    });
   } catch (error) {
     res.status(500).json({ error: "Server Status" });
   }
