@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema(
   {
-    // Sayfamızdaki category yapısını inceleyerek hangi verilere ihtiyacımız olduğunu kurgulamalıyız.
+    // Sayfamızdaki User yapısını inceleyerek hangi verilere ihtiyacımız olduğunu kurgulamalıyız.
     name: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },

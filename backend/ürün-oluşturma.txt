@@ -1,0 +1,83 @@
+Kurulum ve İşleme Sırasını Products alanı için sıralayalım.
+
+1- Öncelikle modals oluşturulur. Bu modals yapısı veri içerisinde ne olup ne olmayacağını tanımlar. Tanımlamak için mongoose.schema kullanıyor ve sonra bunu export ediyoruz. Export etmeden önce mongoose içerisinde hangi alana ait olduğunu belirtmeyi unutmamalıyız.
+
+const Product = mongoose.model("Product", ProductSchema); "Product" alanına ait ProductSchema ile oluşturulmuş bir mongoose.modal örneği.
+module.exports = Product diyerek bu şema yapısını ve bu model yapısını farklı kaynaklardan erişilebilir hale getiriyoruz.
+
+2- Modals oluşturulduktan sonra routes yapısı kuruyoruz. Route alanında get - delete - post - put gibi fonksiyonları try catch bloğu ile hazırlıyoruz. Hazırlamış olduğumuz modal yapısını buraya import ediyoruz. Genel olarak import kurgusu ve sayfa yapısı şöyle 
+
+const express = require("express");
+const router = express.Router();
+const Product = require("../modals/Product")
+
+// Yeni Bir Ürün Ekleyelim
+router.post("/",async(req,res)=>{
+  try { 
+  } catch (error) {
+    res.status(500).json({error : "Server Status"})
+  }
+})
+//export etmemiz gerekli!
+module.exports = router;
+
+3- Ürün ekleme kurgusu oluşturalım. Ürün eklerken async şekilde çalışan request metoduna gideceğiz. Req metodu kullanıcı tarafından server'a gönderilen veridir. Bu veri içerisindeki tüm verilere ulaşabilmek için req.body'yi kullanacağız. Gönderilen veri bir veri içerisinde yedekleyebiliriz veya ayrı ayrı tanımlayabiliriz. Buradan söylemek istediğim şey şu :
+
+-- const product = req.body; veya const {name,id,img} = req.body; gibi. Buradan gelecek olan veriyi şu şekilde kullanabilir.
+
+-- const newProduct = new Product(product) veya const newProduct = new Product(req.body) şeklinde
+
+-- newProduct bizim async yapısı içerisinde oluşturduğumuz bir tanımlama. Ancak new Product yapısı schema'da yeni bir obje tanımlayacaktır.
+
+-- Post etmek istediğimiz objeyi server'da kayıt edebilmek için : await newProduct.save(); yazıyoruz.
+
+router.post("/",async(req,res)=>{
+    try{
+    const newProduct = new Product(req.body);
+     await newProduct.save();
+     res.status(201).json(newProduct)
+    }
+    catch (error) {
+    res.status(500).json({error : "Server Status"})
+  }
+})
+
+Buradaki kurguyu hazırladıktan sonra gerekli testleri yapabilmek için "POSTMAN" içerisindeki yapıyı hazırlıyoruz.
+
+-- E-Commerce adında ana bir klasör oluşturduk. Bu klasördeki variables içerisine key'i url value'su https://localhost:5000/api olan bir tanımlama yaptık. Sonrasında "products" adında alt bir kategori oluşturduk. Bu klasöre sağ click "Add Request" ekledik. Request adımızı "Create Product" yaptık. Method'umuzu "POST" yaptık. url alanımızı "{{url}}/products" yaptık.
+
+-- Göndereceğimiz verileri nasıl ekliyoruz? "Create Post" requestine erişiyoruz. Ardından "Body" > raw alanına ulaşıyoruz. Buradaki içeriğin "JSON" formatında olmasına özen göstermeliyiz. Burada obje oluşturarak ProductSchema içerisinde gönderilmesi planlanan verileri giriyoruz. required olan verilerde eksik bulunmamalıdır. Sağ üstten send yaptığımızda console'u takip ederek hata alıp almadığımıza ulaşabiliriz.
+
+3.1 - Tüm ürünleri getirme kurgusu oluşturalım. Router olarak kullandığımız products.js içerine ulaşıyoruz.
+
+const express = require("express");
+const router = express.Router();
+const Product = require("../modals/Product")
+
+// Tüm Ürünleri Getirelim
+router.get("/", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products)
+  } catch (error) {
+    res.status(500).json({error : "Server Status"})
+  }
+});
+module.exports = router;
+
+Yapısını kurgulayarak route içindeki tüm products verilerini console içerisinde kullanıma hazırlayabiliriz.
+
+3.2 - Ürünün id'sini kullanarak tek bir ürün getirme kurgusunu hazırlayalım.
+
+router.get("/:productId", async (req, res) => {
+  try {
+    try {
+      const product = await Product.findById(req.params.productId);
+      res.status(200).json(product)
+    } catch (error) {
+      res.status(500).json("Ürün Bulunamadı")
+    }
+  } catch (error) {
+    res.status(500).json({error : "Server Status"})
+  }
+});
