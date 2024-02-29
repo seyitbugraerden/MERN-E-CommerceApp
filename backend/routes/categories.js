@@ -57,7 +57,7 @@ router.put("/:categoryId", async (req, res) => {
       updates,
       { new: true }
     );
-    res.status(500).json(updatedCategory);
+    res.status(201).json(updatedCategory);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server Status" });

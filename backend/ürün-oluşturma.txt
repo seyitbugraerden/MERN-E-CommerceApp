@@ -21,6 +21,22 @@ router.post("/",async(req,res)=>{
 //export etmemiz gerekli!
 module.exports = router;
 
+2.1 - Index.js içerisinde tanımlama yapmayı unutmamalıyız.
+
+// Öncelikle express'i sayfamıza çağıralım.
+const express = require("express");
+// Router kullanmamız için "Router" import etmeliyiz.
+const router = express.Router();
+
+// Route dosyalarını buraya import edelim.
+const productRoute = require("./products");
+
+router.use("/products", productRoute);
+
+//export etmemiz gerekli!
+module.exports = router;
+
+
 3- Ürün ekleme kurgusu oluşturalım. Ürün eklerken async şekilde çalışan request metoduna gideceğiz. Req metodu kullanıcı tarafından server'a gönderilen veridir. Bu veri içerisindeki tüm verilere ulaşabilmek için req.body'yi kullanacağız. Gönderilen veri bir veri içerisinde yedekleyebiliriz veya ayrı ayrı tanımlayabiliriz. Buradan söylemek istediğim şey şu :
 
 -- const product = req.body; veya const {name,id,img} = req.body; gibi. Buradan gelecek olan veriyi şu şekilde kullanabilir.
