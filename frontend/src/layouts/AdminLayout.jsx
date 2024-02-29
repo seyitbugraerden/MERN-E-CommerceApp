@@ -126,10 +126,19 @@ const AdminLayout = ({ children }) => {
     <div className="admin-layout">
       <Layout
         style={{
-          minHeight: "100vh",
+          minheight: "100vh",
         }}
       >
-        <Sider width={200} theme="dark">
+        <Sider
+          width={200}
+          theme="dark"
+          style={{
+            position: "sticky",
+            overflow: "hidden",
+            minheight: "100vh",
+            backgroundColor: "#001529",
+          }}
+        >
           <Menu
             mode="vertical"
             style={{
