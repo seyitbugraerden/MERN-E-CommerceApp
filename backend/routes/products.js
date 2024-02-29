@@ -56,7 +56,19 @@ router.put("/:productId", async (req, res) => {
     res.status(500).json({ error: "Server Status" });
   }
 });
-
+// Ürün Silelim
+router.delete("/:productId", async(req,res)=>{
+  try {
+    try {
+      await Product.findOneAndDelete(req.params.productId)
+      res.status(200).json("Product Deleted")
+    } catch (error) {
+      res.status(500).json({error : "Prodct ID Invalid"})
+    }
+  } catch (error) {
+    res.status(500).json("Server Status")
+  }
+})
 
 //export etmemiz gerekli!
 module.exports = router;
