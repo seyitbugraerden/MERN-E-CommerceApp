@@ -81,3 +81,24 @@ router.get("/:productId", async (req, res) => {
     res.status(500).json({error : "Server Status"})
   }
 });
+
+3.3 - Ürünün id'sini kullanarak ürünü güncelleme kurgusunu hazırlayalım.
+
+router.put("/:productId", async (req, res) => {
+  try {
+    const updates = req.body; Burada update'in kullanıcılar tarafından gelen veri olacağını tanımladık.
+    try {
+      const existingProduct = await Product.findById(req.params.productId) Burada id'sini aldığımız ürünü bulduk.
+      const updatedProduct = await Product.findByIdAndUpdate(
+        existingProduct._id, // existingProduct'ın _id özelliğini kullanın
+        updates,
+        { new: true } Yeni olan veriyi render etmesi için bu kodu tanımladık.
+      );
+      res.status(200).json(updatedProduct);
+    } catch (error) {
+      res.status(500).json({ error: "Product Invalid" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server Status" });
+  }
+});
