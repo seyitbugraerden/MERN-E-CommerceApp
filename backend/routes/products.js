@@ -42,7 +42,7 @@ router.put("/:productId", async (req, res) => {
   try {
     const updates = req.body;
     try {
-      const existingProduct = await Product.findById(req.params.productId)
+      const existingProduct = await Product.findById(req.params.productId);
       const updatedProduct = await Product.findByIdAndUpdate(
         existingProduct._id, // existingProduct'ın _id özelliğini kullanın
         updates,
@@ -57,18 +57,18 @@ router.put("/:productId", async (req, res) => {
   }
 });
 // Ürün Silelim
-router.delete("/:productId", async(req,res)=>{
+router.delete("/:productId", async (req, res) => {
   try {
     try {
-      await Product.findOneAndDelete(req.params.productId)
-      res.status(200).json("Product Deleted")
+      await Product.findOneAndDelete(req.params.productId);
+      res.status(200).json("Product Deleted");
     } catch (error) {
-      res.status(500).json({error : "Prodct ID Invalid"})
+      res.status(500).json({ error: "Prodct ID Invalid" });
     }
   } catch (error) {
-    res.status(500).json("Server Status")
+    res.status(500).json("Server Status");
   }
-})
+});
 
 //export etmemiz gerekli!
 module.exports = router;
