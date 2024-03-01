@@ -5,8 +5,9 @@ import ShopPage from "./pages/ShopPage";
 import AuthPage from "./pages/AuthPage";
 import CartPage from "./pages/CartPage";
 import BlogPage from "./pages/BlogPage";
-import BlogDetails from "./components/Blogs/BlogDetails";
+import BlogDetailsPage from "./components/Blogs/BlogDetails";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
+import AdminUserPage from "./pages/admin/AdminUserPage";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -19,7 +20,10 @@ function App() {
       <Route path="/cart" element={<CartPage />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/product/:id" element={<ProductDetailsPage />} />
-      <Route path="/blog/:id" element={<BlogDetails />} />
+      <Route path="/blog/:id" element={<BlogDetailsPage />} />
+      <Route path="/admin/*">
+        <Route path="users" element={<AdminUserPage />} />
+      </Route>
     </Routes>
   );
 }

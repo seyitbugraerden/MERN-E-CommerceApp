@@ -35,16 +35,14 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
-router.get("/register",async (req,res)=>{
+router.get("/register", async (req, res) => {
   try {
     const user = await User.find();
-    res.status(200).json(user)
+    res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({error : 'Server Status'})
-  } 
-
-})
+    res.status(500).json({ error: "Server Status" });
+  }
+});
 
 // Kullanıcı Girişi (Login) auth/login
 router.post("/login", async (req, res) => {
@@ -67,6 +65,23 @@ router.post("/login", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Server Status" });
+  }
+});
+
+router.delete("/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const deletedUser = await User.findOneAndDelete({ email });
+
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    res.status(200).json(deletedUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
