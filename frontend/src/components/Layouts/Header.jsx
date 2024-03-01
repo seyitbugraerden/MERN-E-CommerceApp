@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 const Header = ({ setIsSearchShow }) => {
   const { cartItems } = useContext(CartContext);
   // const location = useLocation;/hangi sayfada olduğumuzu tespit ediyoruz
+  const user = localStorage.getItem("user");
   const { pathname } = useLocation;
   return (
     <header>
@@ -240,6 +241,20 @@ const Header = ({ setIsSearchShow }) => {
                     </span>
                   </Link>
                 </div>
+                {user && (
+  <button
+    className="search-button"
+    onClick={() => {
+      if (window.confirm("Çıkış Yapmak İstediğinize Emin Misiniz?")) {
+        localStorage.removeItem("user");
+        window.location.href = "/"
+      }
+    }}
+  >
+    <i className="bi bi-box-arrow-right"></i>
+  </button>
+)}
+
               </div>
             </div>
           </div>
