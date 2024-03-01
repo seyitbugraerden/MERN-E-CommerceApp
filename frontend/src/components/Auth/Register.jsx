@@ -3,9 +3,9 @@ import { message } from "antd";
 import {useNavigate} from "react-router-dom"
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "bugra",
-    email: "seyitbugraerden2354415@gmail.com",
-    password: "bıgRA123",
+    name: "",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
 
