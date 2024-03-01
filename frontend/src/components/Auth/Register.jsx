@@ -1,14 +1,44 @@
+import { useState } from "react";
+
 const Register = () => {
+  const [formData, setFormData] = useState({
+    username : '',
+    email : '',
+    password : ''
+  })
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    console.log(formData)
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      console.log('Başarılı', response)
+    } catch (error) {
+      console.log("Giriş hatası:", error);
+    }
+  };
+
     return (
       <div className="account-column">
         <h2>Register</h2>
-        <form>
+        <form onSubmit={handleRegister}>
           <div>
             <label>
               <span>
                 Username <span className="required">*</span>
               </span>
-              <input type="text" />
+              <input type="text" name="username" onChange={handleInputChange} />
             </label>
           </div>
           <div>
@@ -16,7 +46,7 @@ const Register = () => {
               <span>
                 Email address <span className="required">*</span>
               </span>
-              <input type="email" />
+              <input type="email" name="email" onChange={handleInputChange}  />
             </label>
           </div>
           <div>
@@ -24,7 +54,7 @@ const Register = () => {
               <span>
                 Password <span className="required">*</span>
               </span>
-              <input type="password" />
+              <input type="password" name="password" onChange={handleInputChange}  />
             </label>
           </div>
           <div className="privacy-policy-text remember">

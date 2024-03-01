@@ -9,6 +9,7 @@ const app = express();
 const mainRoute = require("./routes/index");
 const logger = require("morgan")
 const post = 5000;
+const cors = require("cors")
 
 dotenv.config(); //dotenv config dosyamızı server'a import etik.
 
@@ -35,6 +36,7 @@ const connect = async () => {
 //Herhangi bir api sayfaya ulaştığında json şeklinde geleceği için veriyi parse etmeliyiz. ! middlewares !
 app.use(logger("dev")) // morgan kütüphanesini kullandık. Bunun sayesinde terminalde yaptığımız logları görebiliyoruz.
 app.use(express.json());
+app.use(cors())
 
 app.use("/api", mainRoute);
 
