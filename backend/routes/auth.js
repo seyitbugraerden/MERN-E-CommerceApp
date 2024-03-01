@@ -14,7 +14,7 @@ const generateRandomAvatar = () => {
 // Kullanıcı Oluşturma ( Create - Register) auth/register
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, role, avatar } = req.body;
+    const { name, email, password, avatar } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -26,7 +26,6 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
       avatar: generateRandomAvatar(),
     }); // Burada "password" alanını kullanmalısınız.
     await newUser.save();
@@ -35,6 +34,16 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: "Server Status" });
   }
 });
+
+router.get("/register",async (req,res)=>{
+  try {
+    const user = await User.find();
+    res.status(200).json(user)
+  } catch (error) {
+    res.status(500).json({error : 'Server Status'})
+  } 
+
+})
 
 // Kullanıcı Girişi (Login) auth/login
 router.post("/login", async (req, res) => {
