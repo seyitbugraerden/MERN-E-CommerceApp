@@ -18,7 +18,7 @@ router.post("/register", async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json("Already Exist");
+      return res.status(400).json("Already Exist"); // Hata döndürdükten sonra işlemi sonlandır.
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -34,6 +34,7 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ error: "Server Status" });
   }
 });
+
 
 router.get("/register",async (req,res)=>{
   try {

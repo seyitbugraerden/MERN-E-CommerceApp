@@ -8,8 +8,8 @@ const dotenv = require("dotenv"); // dotenv npm install
 const app = express();
 const mainRoute = require("./routes/index");
 const logger = require("morgan")
-const post = 5000;
-const cors = require("cors")
+const port = 5000;
+const cors = require("cors") // güvenlik ihtiyacı
 
 dotenv.config(); //dotenv config dosyamızı server'a import etik.
 
@@ -40,7 +40,7 @@ app.use(cors())
 
 app.use("/api", mainRoute);
 
-app.listen(post, () => {
+app.listen(port, () => {
   connect(); //connect fonsiyonu listen içerisinde yazılıyor.
-  console.log("Sunucu Çalışıyor");
+  console.log(`Aktif Port ${port}`);
 });
