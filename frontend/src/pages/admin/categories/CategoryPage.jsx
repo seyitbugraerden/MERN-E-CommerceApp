@@ -3,31 +3,21 @@ import { Button, Popconfirm, Table, message } from "antd";
 
 const columns = [
   {
-    title: "Avatar",
-    dataIndex: "avatar",
-    key: "avatar",
-    render: (imgSrc) => (
-      <img
-        src={imgSrc}
-        alt=""
-        style={{ height: "30px", borderRadius: "50%" }}
-      />
-    ),
+    title: "Kategori Görseli",
+    dataIndex: "img",
+    key: "img",
+    render: (imgSrc) => <img src={imgSrc} alt="" style={{ width: 100 }} />,
   },
   {
-    title: "Username",
-    dataIndex: "username",
-    key: "username",
+    title: "name",
+    dataIndex: "name",
+    key: "name",
+    render: (text) => <b>{text}</b>,
   },
   {
-    title: "E-Mail",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Role",
-    dataIndex: "role",
-    key: "role",
+    title: "Ouşturma Tarihi",
+    dataIndex: "createdAt",
+    key: "createdAt",
   },
   {
     title: "Actions",
@@ -39,7 +29,7 @@ const columns = [
         description="Kullanıcıyı silmek istediğinizden emin misiniz?"
         okText="Yes"
         cancelText="No"
-        onConfirm={() => deleteUser(record.email)}
+        onConfirm={() => deleteCategory(record._id)}
       >
         <Button type="primary" danger>
           Delete
@@ -48,35 +38,36 @@ const columns = [
     ),
   },
 ];
-const deleteUser = async (userEmail) => {
+
+const fetchCategories = async (categoryId) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/auth/${userEmail}`,
+      `http://localhost:5000/api/category/${categoryId}`,
       {
         method: "DELETE",
       }
     );
     if (response.ok) {
-      message.success("Kullanıcı Silindi");
+      message.success("Kategori Silindi");
     } else {
-      message.error("Kullanıcı Silinemedi");
+      message.error("Kategori Silinemedi");
     }
-    window.location.href = "/admin/users";
+    // window.location.href = "/admin/categories";
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error("Error deleting Category:", error);
   }
 };
-function AdminUserPage() {
+
+function CategoryPage() {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchUsers = useCallback(async () => {
+  const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/auth/register`);
+      const response = await fetch(`http://localhost:5000/api/categories`);
       if (response.ok) {
         const data = await response.json();
-
         setDataSource(data);
       }
     } catch (error) {
@@ -87,8 +78,8 @@ function AdminUserPage() {
   }, []);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    fetchCategories();
+  }, [fetchCategories]);
 
   return (
     <>
@@ -102,4 +93,4 @@ function AdminUserPage() {
   );
 }
 
-export default AdminUserPage;
+export default CategoryPage;
