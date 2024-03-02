@@ -8,8 +8,9 @@ import BlogPage from "./pages/BlogPage";
 import BlogDetailsPage from "./components/Blogs/BlogDetails";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import UserPage from "./pages/admin/UserPage";
-import { Route, Routes } from "react-router-dom";
 import CategoryPage from "./pages/admin/categories/categoryPage";
+import UpdateCategoryPage from "./pages/admin/categories/UpdateCategoryPage";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <Route path="/admin/*">
         <Route path="users" element={<UserPage />} />
         <Route path="categories" element={<CategoryPage />} />
+        <Route path="categories/update/:id" element={<UpdateCategoryPage />} />
       </Route>
     </Routes>
   );
