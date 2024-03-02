@@ -13,6 +13,7 @@ import UpdateCategoryPage from "./pages/admin/categories/UpdateCategoryPage";
 import CreateCategoryPage from "./pages/admin/categories/CreateCategoryPage";
 import CreateProductPage from "./pages/admin/products/CreateProductPage";
 import ProductPage from "./pages/admin/products/ProductPage";
+import UpdateProductPage from "./pages/admin/products/UpdateProductPage";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="categories/create" element={<CreateCategoryPage />} />
         <Route path="products/create" element={<CreateProductPage />} />
         <Route path="products" element={<ProductPage />} />
+        <Route path="products/update/:id" element={<UpdateProductPage />} />
       </Route>
     </Routes>
   );
