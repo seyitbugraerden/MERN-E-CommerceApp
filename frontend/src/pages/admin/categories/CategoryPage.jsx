@@ -63,9 +63,9 @@ function CategoryPage() {
         }
       );
       if (response.ok) {
-        message.success("Kullanıcı Silindi");
+        message.success("Kategori Silindi");
       } else {
-        message.error("Kullanıcı Silinemedi");
+        message.error("Kategori Silinemedi");
       }
       window.location.href = "/admin/categories";
     } catch (error) {
