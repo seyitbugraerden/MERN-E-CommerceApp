@@ -16,6 +16,7 @@ import ProductPage from "./pages/admin/products/ProductPage";
 import UpdateProductPage from "./pages/admin/products/UpdateProductPage";
 import CreateCouponPage from "./pages/admin/coupons/CreateCouponPage";
 import CouponsPage from "./pages/admin/coupons/CouponsPage";
+import UpdateCouponPage from "./pages/admin/coupons/UpdateCouponPage";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="products/update/:id" element={<UpdateProductPage />} />
         <Route path="coupons" element={<CouponsPage />} />
         <Route path="coupons/create" element={<CreateCouponPage />} />
+        <Route path="coupons/update/:id" element={<UpdateCouponPage />} />
       </Route>
     </Routes>
   );
