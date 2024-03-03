@@ -6,7 +6,6 @@ const CartTotals = () => {
 
   const cartItemTotals = cartItems.map((item) => {
     const itemTotal = item.price.current;
-
     return itemTotal;
   });
   const subTotals = cartItemTotals.reduce((previousValue, currentValue) => {
