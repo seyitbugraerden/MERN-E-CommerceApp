@@ -74,10 +74,11 @@ function ProductPage() {
         }
       );
       if (response.ok) {
-        message.success("Ürün Silindi");
+        message.success("Product updated successfully");
       } else {
         message.error("Ürün Silinemedi");
       }
+      message.success("Product updated successfully");
       window.location.href = "/admin/products";
     } catch (error) {
       console.error("Error deleting user:", error);

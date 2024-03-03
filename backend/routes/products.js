@@ -38,32 +38,28 @@ router.post("/", async (req, res) => {
   }
 });
 // Ürün Güncelleyelim
-router.put("/update/:productId", async (req, res) => {
+router.put("/:productId", async (req, res) => {
   try {
+    const productId = req.params.productId;
     const updates = req.body;
-    try {
-      const existingProduct = await Product.findById(req.params.productId);
-      const updatedProduct = await Product.findByIdAndUpdate(
-        existingProduct._id, // existingProduct'ın _id özelliğini kullanın
-        updates,
-        { new: true }
-      );
-      res.status(200).json(updatedProduct);
-    } catch (error) {
-      res.status(500).json({ error: "Product Invalid" });
-    }
+    const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
+      new: true,
+    });
+    res.status(201).json(updatedProduct);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Server Status" });
   }
 });
+
 // Ürün Silelim
 router.delete("/:productId", async (req, res) => {
   try {
     try {
-      await Product.findOneAndDelete(req.params.productId);
+      await Product.findByIdAndDelete(req.params.productId);
       res.status(200).json("Product Deleted");
     } catch (error) {
-      res.status(500).json({ error: "Prodct ID Invalid" });
+      res.status(500).json({ error: "Product ID Invalid" });
     }
   } catch (error) {
     res.status(500).json("Server Status");
