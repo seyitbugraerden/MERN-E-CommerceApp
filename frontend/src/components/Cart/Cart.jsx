@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import "./Cart.css";
 import CartCoupon from "./CartCoupon";
 import CartProgress from "./CartProgress";
@@ -5,6 +6,17 @@ import CartTable from "./CartTable";
 import CartTotals from "./CartTotals";
 
 const Cart = () => {
+  // State to hold coupon data
+  const [coupon, setCoupon] = useState(null);
+
+  // Define handleCouponSubmit function
+  const handleCouponSubmit = (coupon) => {
+    // Handle coupon submission logic here
+    console.log("Coupon submitted:", coupon);
+    // Set the coupon state
+    setCoupon(coupon);
+  };
+
   return (
     <section className="cart-page">
       <div className="container">
@@ -13,11 +25,11 @@ const Cart = () => {
             <CartProgress />
             <div className="shop-table-wrapper">
               <CartTable />
-              <CartCoupon />
+              <CartCoupon onCouponSubmit={handleCouponSubmit} />
             </div>
           </form>
           <div className="cart-collaterals">
-            <CartTotals />
+            <CartTotals coupon={coupon} />
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { CartContext } from "../../context/CartProvider";
-const CartTotals = () => {
+
+const CartTotals = ({ coupon }) => {
   const [fastCargoChecked, setFastCargoChecked] = useState(false);
   const { cartItems } = useContext(CartContext);
 
@@ -50,7 +51,14 @@ const CartTotals = () => {
           <tr>
             <th>Total</th>
             <td>
-              <strong id="cart-total">${cartTotals}</strong>
+              <strong id="cart-total">
+                {coupon
+                  ? `${(
+                      cartTotals -
+                      cartTotals * (coupon.discountPercent / 100)
+                    ).toFixed(2)}`
+                  : `${cartTotals}`}
+              </strong>
             </td>
           </tr>
         </tbody>
@@ -61,4 +69,5 @@ const CartTotals = () => {
     </div>
   );
 };
+
 export default CartTotals;
