@@ -1,15 +1,11 @@
-import "./CategoryItem.css"
+import "./CategoryItem.css";
 
-const CategoryItem = () => {
+const CategoryItem = ({ item }) => {
   return (
     <li className="category-item">
       <a href="#">
-        <img
-          src="img/categories/categories1.png"
-          alt=""
-          className="category-image"
-        />
-        <span className="category-title">Smartphone</span>
+        <img src={item.img} alt="" className="category-image" />
+        <span className="category-title">{item.name}</span>
       </a>
     </li>
   );
