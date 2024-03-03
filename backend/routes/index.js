@@ -7,12 +7,12 @@ const router = express.Router();
 const productRoute = require("./products");
 const categoryRoute = require("./categories");
 const authRoute = require("./auth");
-const couponRoute = require("./coupons")
+const couponRoute = require("./coupons");
 
 router.use("/categories", categoryRoute);
 router.use("/products", productRoute);
 router.use("/auth", authRoute);
-router.use("/coupon",couponRoute)
+router.use("/coupons", couponRoute);
 
 //export etmemiz gerekli!
 module.exports = router;
