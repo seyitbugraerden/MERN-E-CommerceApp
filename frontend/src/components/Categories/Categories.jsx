@@ -28,7 +28,7 @@ const Categories = () => {
         </div>
         <ul className="category-list">
           {categoriesData.map((item) => {
-            return <CategoryItem item={item} key={item.id} />;
+            return <CategoryItem item={item} key={item._id} />;
           })}
         </ul>
       </div>

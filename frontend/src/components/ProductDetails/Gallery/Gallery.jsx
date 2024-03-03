@@ -33,7 +33,7 @@ function NextBtn({ onClick }) {
   );
 }
 
-const Gallery = () => {
+const Gallery = ({ product }) => {
   const [activeImg, setActiveImg] = useState({
     img: productsData[0].img.singleImage,
     imgIndex: 0,
