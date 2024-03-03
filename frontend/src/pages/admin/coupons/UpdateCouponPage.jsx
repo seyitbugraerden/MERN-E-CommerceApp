@@ -7,13 +7,13 @@ function UpdateCouponPage() {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const params = useParams();
-  const categoryId = params.id;
+  const couponId = params.id;
   const navigate = useNavigate();
   const onFinish = async (values) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/categories/${categoryId}`,
+        `http://localhost:5000/api/coupons/${couponId}`,
         {
           method: "PUT",
           headers: {
@@ -33,7 +33,7 @@ function UpdateCouponPage() {
       setLoading(false);
     }
 
-    navigate("/admin/categories");
+    navigate("/admin/coupons");
   };
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function UpdateCouponPage() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/coupons/${categoryId}`
+          `http://localhost:5000/api/coupons/${couponId}`
         );
 
         if (!response.ok) {
@@ -64,7 +64,7 @@ function UpdateCouponPage() {
       }
     };
     fetchSingleCategory();
-  }, [categoryId, form]);
+  }, [couponId, form]);
 
   return (
     <Spin spinning={loading}>
