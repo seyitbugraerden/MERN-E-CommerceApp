@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
   }
 });
 // Ürün Güncelleyelim
-router.put("/:productId", async (req, res) => {
+router.put("/update/:productId", async (req, res) => {
   try {
     const updates = req.body;
     try {
