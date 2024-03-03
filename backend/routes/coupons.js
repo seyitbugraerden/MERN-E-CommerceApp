@@ -51,16 +51,20 @@ router.get("/code/:couponCode", async (req, res) => {
 // Kayıtlı Coupon Silme
 router.delete("/:couponId", async (req, res) => {
   try {
-    try {
-      const deletedCoupon = await Coupon.findOneAndDelete(res.params.couponId);
-      res.status(200).json(deletedCoupon);
-    } catch (error) {
-      res.status(500).json("ID Invalid");
+    const deletedCoupon = await Coupon.findByIdAndDelete(req.params.couponId);
+    if (!deletedCoupon) {
+      return res.status(404).json({ error: "Coupon not found" });
     }
+    res.status(200).json(deletedCoupon);
   } catch (error) {
-    res.status(500).json({ error: "Server Status" });
+    if (error.name === "CastError") {
+      res.status(400).json({ error: "Invalid ID format" });
+    } else {
+      res.status(500).json({ error: "Server error" });
+    }
   }
 });
+
 // Kayıtlı Coupon Güncelleme
 router.put("/:couponId", async (req, res) => {
   try {

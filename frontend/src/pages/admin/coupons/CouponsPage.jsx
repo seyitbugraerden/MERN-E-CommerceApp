@@ -51,17 +51,17 @@ function CategoryPage() {
   const deleteCategory = async (categoryId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/categories/${categoryId}`,
+        `http://localhost:5000/api/coupons/${categoryId}`,
         {
           method: "DELETE",
         }
       );
       if (response.ok) {
-        message.success("Kategori Silindi");
+        message.success("Kupon Silindi");
       } else {
-        message.error("Kategori Silinemedi");
+        message.error("Kupon Silinemedi");
       }
-      window.location.href = "/admin/categories";
+      window.location.href = "/admin/coupons";
     } catch (error) {
       console.error("Error deleting user:", error);
     }
