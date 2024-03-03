@@ -7,7 +7,7 @@ const ProductItem = ({ productItem }) => {
   const { addToCart, cartItems } = useContext(CartContext);
 
   const filteredCart = cartItems.find(
-    (cartItem) => cartItem.id == productItem.id
+    (cartItem) => cartItem._id == productItem.id
   );
 
   return (

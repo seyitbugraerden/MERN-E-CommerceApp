@@ -3,6 +3,7 @@ import CartItem from "./CartItem";
 import { CartContext } from "../../context/CartProvider";
 const CartTable = () => {
   const { cartItems } = useContext(CartContext);
+  console.log(cartItems);
   return (
     <table className="shop-table">
       <thead>

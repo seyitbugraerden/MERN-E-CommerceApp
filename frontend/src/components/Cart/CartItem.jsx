@@ -6,7 +6,6 @@ const CartItem = ({ cartItem }) => {
     <tr className="cart-item">
       <td></td>
       <td className="cart-image">
-        <img src={cartItem.img.singleImage} alt="" />
         <img src={cartItem.img[0]} alt="" />
         <i
           className="bi bi-x delete-cart"
