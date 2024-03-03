@@ -5,7 +5,7 @@ const CartTotals = () => {
   const { cartItems } = useContext(CartContext);
 
   const cartItemTotals = cartItems.map((item) => {
-    const itemTotal = item.price * item.quantity;
+    const itemTotal = item.price.current;
 
     return itemTotal;
   });
