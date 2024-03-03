@@ -3,10 +3,7 @@ import { CartContext } from "../../context/CartProvider";
 import { InputNumber } from "antd";
 const CartItem = ({ cartItem }) => {
   const { removeFromCart } = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1);
-  const handleChange = (value) => {
-    setQuantity(value);
-  };
+
   return (
     <tr className="cart-item">
       <td></td>
@@ -21,10 +18,10 @@ const CartItem = ({ cartItem }) => {
       <td>${cartItem.price.current.toFixed(2)}</td>
 
       <td className="product-quantity">
-        <InputNumber min={1} value={quantity} onChange={handleChange} />
+        <InputNumber value={1} />
       </td>
       <td style={{ textAlign: "center" }}>
-        ${(cartItem.price.current * quantity).toFixed(2)}
+        ${(cartItem.price.current * 1).toFixed(2)}
       </td>
     </tr>
   );
