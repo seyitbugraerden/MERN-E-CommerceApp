@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { createContext, useEffect } from "react";
 import { useState } from "react";
 
@@ -15,6 +16,7 @@ const CartProvider = ({ children }) => {
 
   const addToCart = (cartItem) => {
     setCartItems((prevCartItems) => [...prevCartItems, cartItem]);
+    message.success("Sepete Eklendi");
   };
 
   const removeFromCart = (itemId) => {
@@ -22,6 +24,7 @@ const CartProvider = ({ children }) => {
       return cartItem._id !== itemId;
     });
     setCartItems(filteredCartItems);
+    message.error("Sepetten Kaldırıldı");
   };
   return (
     <CartContext.Provider value={{ addToCart, cartItems, removeFromCart }}>
