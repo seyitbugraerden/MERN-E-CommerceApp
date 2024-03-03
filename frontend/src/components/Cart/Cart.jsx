@@ -12,7 +12,7 @@ const Cart = () => {
           <form className="cart-form">
             <CartProgress />
             <div className="shop-table-wrapper">
-              <CartTable />
+              {/* <CartTable /> */}
               <CartCoupon />
             </div>
           </form>
