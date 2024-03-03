@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
 import Slider from "react-slick";
-import productsData from "../../data.json";
 import "./Products.css";
 
 function NextBtn({ onClick }) {
@@ -21,7 +20,23 @@ function PrevBtn({ onClick }) {
 }
 
 const Products = () => {
-  const [products] = useState(productsData);
+  const [products, setProducts] = useState([]);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/products`);
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const sliderSettings = {
     dots: false,
