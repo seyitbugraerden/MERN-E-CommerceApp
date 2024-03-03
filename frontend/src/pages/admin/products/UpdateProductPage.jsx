@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
+
 function UpdateProductPage() {
   const [loading, setLoading] = useState(false);
-  const [productData, setProductData] = useState([]);
+  const [productData, setProductData] = useState({});
   const navigate = useNavigate();
   const params = useParams();
   const [form] = Form.useForm();
@@ -13,6 +14,7 @@ function UpdateProductPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `http://localhost:5000/api/products/${productId}`
@@ -20,43 +22,85 @@ function UpdateProductPage() {
         if (response.ok) {
           const data = await response.json();
           setProductData(data);
-          console.log(productData);
-          if (data) {
-            // Join array elements with newline characters
-            const imgLinksText = data.img.join("\n");
-            const colorsText = data.colors.join("\n");
-            const sizesText = data.sizes.join("\n");
+          const imgLinksText = data.img.join("\n");
+          const colorsText = data.colors.join("\n");
+          const sizesText = data.sizes.join("\n");
 
-            form.setFieldsValue({
-              name: data.name,
-              current: data.price.current,
-              discount: data.price.discount,
-              category: data.category,
-              img: imgLinksText, // Set the joined text instead of array
-              colors: colorsText, // Set the joined text instead of array
-              sizes: sizesText, // Set the joined text instead of array
-              description: data.description,
-            });
-          }
+          form.setFieldsValue({
+            name: data.name,
+            current: data.price.current,
+            discount: data.price.discount,
+            category: data.category,
+            img: imgLinksText,
+            colors: colorsText,
+            sizes: sizesText,
+            description: data.description,
+          });
+        } else {
+          message.error("Failed to fetch product data");
         }
       } catch (error) {
         console.log(error);
+        message.error("An error occurred while fetching product data");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
-  }, [productId]);
+  }, [form, productId]);
 
-  console.log(productData);
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:5000/api/products/${productId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...values,
+            price: {
+              current: values.current,
+              discount: values.discount,
+            },
+            img: values.img.split("\n"), // Split the text into an array
+            colors: values.colors.split("\n"), // Split the text into an array
+            sizes: values.sizes.split("\n"), // Split the text into an array
+          }),
+        }
+      );
+      if (response.ok) {
+        message.success("Product updated successfully");
+        navigate("/admin/products");
+      } else {
+        message.error("Failed to update product");
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("An error occurred while updating product");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Spin spinning={loading}>
-      <Form name="basic" layout="vertical" autoComplete="off" form={form}>
+      <Form
+        name="basic"
+        layout="vertical"
+        autoComplete="off"
+        form={form}
+        onFinish={onFinish}
+      >
         <Form.Item
-          label="Ürün İsmi"
+          label="Product Name"
           name="name"
           rules={[
             {
               required: true,
-              message: "Lütfen ürün adını girin!",
+              message: "Please enter the product name",
             },
           ]}
         >
@@ -64,12 +108,12 @@ function UpdateProductPage() {
         </Form.Item>
 
         <Form.Item
-          label="Ürün Fiyatı"
+          label="Product Price"
           name="current"
           rules={[
             {
               required: true,
-              message: "Lütfen ürün fiyatı girin!",
+              message: "Please enter the product price",
             },
           ]}
         >
@@ -77,12 +121,12 @@ function UpdateProductPage() {
         </Form.Item>
 
         <Form.Item
-          label="İndirim Oranı"
+          label="Discount Rate"
           name="discount"
           rules={[
             {
               required: true,
-              message: "Lütfen indirim oranını girin!",
+              message: "Please enter the discount rate",
             },
           ]}
         >
@@ -90,74 +134,73 @@ function UpdateProductPage() {
         </Form.Item>
 
         <Form.Item
-          label="Ürün Kategorisi"
+          label="Product Category"
           name="category"
           rules={[
             {
               required: true,
-              message: "Lütfen ürün kategorisi girin!",
+              message: "Please select the product category",
             },
           ]}
         >
-          <Select>1</Select>
+          <Select />
         </Form.Item>
 
         <Form.Item
-          label="Ürün Görselleri (Link)"
-          name="img" // Assuming this is the field name
+          label="Product Images (Links)"
+          name="img"
           rules={[
             {
               required: true,
-              message: "Lütfen 4 adet ürün görsel linkini girin!",
+              message: "Please enter 4 product image links",
             },
           ]}
         >
           <Input.TextArea
-            placeholder="Ürün görselleri sırayla giriniz."
+            placeholder="Enter product image links separated by new lines"
             autoSize={{ minRows: 4 }}
-            value="5"
           />
         </Form.Item>
 
         <Form.Item
-          label="Ürün Renkleri (RGB)"
+          label="Product Colors (RGB)"
           name="colors"
           rules={[
             {
               required: true,
-              message: "Lütfen geçerli ürün renklerini yazınız",
+              message: "Please enter valid product colors (RGB)",
             },
           ]}
         >
           <Input.TextArea
-            placeholder="Lütfen geçerli ürün renklerini yazınız (RGB)"
+            placeholder="Enter valid product colors (RGB) separated by new lines"
             autoSize={{ minRows: 4 }}
           />
         </Form.Item>
 
         <Form.Item
-          label="Ürün Bedenlerini Giriniz"
+          label="Product Sizes"
           name="sizes"
           rules={[
             {
               required: true,
-              message: "Lütfen geçerli ürün bedenlerini yazınız",
+              message: "Please enter valid product sizes",
             },
           ]}
         >
           <Input.TextArea
-            placeholder="Lütfen geçerli ürün bedenlerini yazınız"
+            placeholder="Enter valid product sizes separated by new lines"
             autoSize={{ minRows: 4 }}
           />
         </Form.Item>
 
         <Form.Item
-          label="Ürün Detayı Giriniz"
+          label="Product Description"
           name="description"
           rules={[
             {
               required: true,
-              message: "Ürün Detayı Giriniz",
+              message: "Please enter the product description",
             },
           ]}
         >
@@ -166,7 +209,7 @@ function UpdateProductPage() {
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Kategori Oluştur
+            Update Product
           </Button>
         </Form.Item>
       </Form>
