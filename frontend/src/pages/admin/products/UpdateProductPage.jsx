@@ -2,11 +2,13 @@ import { Input, Form, message, Spin, InputNumber, Select, Button } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 function UpdateProductPage() {
   const [loading, setLoading] = useState(false);
   const [productData, setProductData] = useState([]);
   const navigate = useNavigate();
   const params = useParams();
+  const [form] = Form.useForm();
   const productId = params.id;
 
   useEffect(() => {
@@ -19,6 +21,23 @@ function UpdateProductPage() {
           const data = await response.json();
           setProductData(data);
           console.log(productData);
+          if (data) {
+            // Join array elements with newline characters
+            const imgLinksText = data.img.join("\n");
+            const colorsText = data.colors.join("\n");
+            const sizesText = data.sizes.join("\n");
+
+            form.setFieldsValue({
+              name: data.name,
+              current: data.price.current,
+              discount: data.price.discount,
+              category: data.category,
+              img: imgLinksText, // Set the joined text instead of array
+              colors: colorsText, // Set the joined text instead of array
+              sizes: sizesText, // Set the joined text instead of array
+              description: data.description,
+            });
+          }
         }
       } catch (error) {
         console.log(error);
@@ -26,10 +45,11 @@ function UpdateProductPage() {
     };
     fetchData();
   }, [productId]);
+
   console.log(productData);
   return (
     <Spin spinning={loading}>
-      <Form name="basic" layout="vertical" autoComplete="off">
+      <Form name="basic" layout="vertical" autoComplete="off" form={form}>
         <Form.Item
           label="Ürün İsmi"
           name="name"
@@ -79,18 +99,12 @@ function UpdateProductPage() {
             },
           ]}
         >
-          <Select>
-            {categories.map((item) => (
-              <Select.Option value={item._id} key={item._id}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select>1</Select>
         </Form.Item>
 
         <Form.Item
           label="Ürün Görselleri (Link)"
-          name="img"
+          name="img" // Assuming this is the field name
           rules={[
             {
               required: true,
@@ -101,6 +115,7 @@ function UpdateProductPage() {
           <Input.TextArea
             placeholder="Ürün görselleri sırayla giriniz."
             autoSize={{ minRows: 4 }}
+            value="5"
           />
         </Form.Item>
 
