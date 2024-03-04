@@ -1,9 +1,39 @@
+import { useParams } from "react-router-dom";
 import "./Info.css";
+import { useEffect, useState } from "react";
+import {InputNumber} from "antd"
 
 const Info = () => {
+  const [productData, setProductData] = useState([]);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [quantity, setQuantity] = useState(1)
+  const params = useParams();
+  const productId = params.id;
+
+  console.log(productData);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/products/${productId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setProductData(data);
+        } else {
+          message.error("Failed to fetch product data");
+        }
+      } catch (error) {
+        message.error("An error occurred while fetching product data");
+      }
+    };
+    fetchData();
+  }, [productId]);
   return (
     <div className="product-info">
-      <h1 className="product-title">Ridley High Waist</h1>
+      <h1 className="product-title">{productData.name}</h1>
       <div className="product-review">
         <ul className="product-star">
           <li>
@@ -25,12 +55,11 @@ const Info = () => {
         <span>2 reviews</span>
       </div>
       <div className="product-price">
-        <s className="old-price">$165</s>
-        <strong className="new-price">$100</strong>
+        <s className="old-price">{productData.price?.discount}%</s>
+        <strong className="new-price">{productData.price?.current} TL</strong>
       </div>
       <p className="product-description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
+        {productData.description}
       </p>
       <form className="variations-form">
         <div className="variations">
@@ -39,26 +68,26 @@ const Info = () => {
               <span>Color</span>
             </div>
             <div className="colors-wrapper">
-              <div className="color-wrapper">
-                <label className="blue-color">
-                  <input type="radio" name="product-color" />
-                </label>
-              </div>
-              <div className="color-wrapper">
-                <label className="red-color">
-                  <input type="radio" name="product-color" />
-                </label>
-              </div>
-              <div className="color-wrapper active">
-                <label className="green-color">
-                  <input type="radio" name="product-color" />
-                </label>
-              </div>
-              <div className="color-wrapper">
-                <label className="purple-color">
-                  <input type="radio" name="product-color" />
-                </label>
-              </div>
+              {productData.colors?.map((item, index) => {
+                return (
+                  <div
+                    className={`color-wrapper ${
+                      item === selectedColor ? "active" : ""
+                    }`}
+                    key={index}
+                    onClick={() => {
+                      setSelectedColor(item);
+                    }}
+                  >
+                    <label
+                      className="blue-color"
+                      style={{ backgroundColor: `${item}` }}
+                    >
+                      <input type="radio" name="product-color" />
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="values">
@@ -66,15 +95,21 @@ const Info = () => {
               <span>Size</span>
             </div>
             <div className="values-list">
-              <span className="active">XS</span>
-              <span>S</span>
-              <span>M</span>
-              <span>L</span>
-              <span>XL</span>
+              {productData.sizes?.map((item, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={`${item === selectedSize ? "active" : ""}`}
+                    onClick={()=>{setSelectedSize(item)}}
+                  >
+                    {item}
+                  </span>
+                );
+              })}
             </div>
           </div>
           <div className="cart-button">
-            <input type="number" defaultValue="1" min="1" id="quantity" />
+          <InputNumber min={1} max={1} value={quantity} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
             <button
               className="btn btn-lg btn-primary"
               id="add-to-cart"
@@ -103,11 +138,11 @@ const Info = () => {
       <div className="product-meta">
         <div className="product-sku">
           <span>SKU:</span>
-          <strong>BE45VGRT</strong>
+          <strong>{productData._id}</strong>
         </div>
         <div className="product-categories">
           <span>Categories:</span>
-          <strong>Pants , Women</strong>
+          <strong>{productData.category}</strong>
         </div>
         <div className="product-tags">
           <span>Tags:</span>
