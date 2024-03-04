@@ -29,7 +29,6 @@ const ProductDetails = () => {
     };
     fetchData();
   }, [productId]);
-  console.log(productData);
 
   return (
     <section className="single-product">
@@ -38,7 +37,7 @@ const ProductDetails = () => {
           <Breadcrumb />
           <div className="single-content">
             <main className="site-main">
-              <Gallery product={productData} />
+              <Gallery/>
               <Info />
             </main>
           </div>

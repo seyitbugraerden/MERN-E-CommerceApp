@@ -1,43 +1,35 @@
-import { useState } from "react";
-import productsData from "../../../data.json";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
+import { useParams } from "react-router-dom";
 import "./Gallery.css";
 
-function PrevBtn({ onClick }) {
-  return (
-    <button
-      className="glide__arrow glide__arrow--left"
-      data-glide-dir="<"
-      onClick={onClick}
-      style={{
-        zIndex: "2",
-      }}
-    >
-      <i className="bi bi-chevron-left"></i>
-    </button>
-  );
-}
+const Gallery = () => {
+  const [product, setProduct] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [indexValue, setIndexValue] = useState(0);
+  const params = useParams();
+  const productId = params.id;
 
-function NextBtn({ onClick }) {
-  return (
-    <button
-      className="glide__arrow glide__arrow--right"
-      data-glide-dir=">"
-      onClick={onClick}
-      style={{
-        zIndex: "2",
-      }}
-    >
-      <i className="bi bi-chevron-right"></i>
-    </button>
-  );
-}
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/products/${productId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setProduct(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [productId]); // Include productId as a dependency
 
-const Gallery = ({ product }) => {
-  const [activeImg, setActiveImg] = useState({
-    img: productsData[0].img.singleImage,
-    imgIndex: 0,
-  });
   const sliderSettings = {
     dots: false,
     infinite: true,
@@ -46,54 +38,46 @@ const Gallery = ({ product }) => {
     nextArrow: <NextBtn />,
     prevArrow: <PrevBtn />,
   };
+
+  function PrevBtn({ onClick }) {
+    return (
+      <button
+        className="glide__arrow glide__arrow--left"
+        data-glide-dir="<"
+        onClick={onClick}
+        style={{
+          zIndex: "2",
+        }}
+      >
+        <i className="bi bi-chevron-left"></i>
+      </button>
+    );
+  }
+
+  function NextBtn({ onClick }) {
+    return (
+      <button
+        className="glide__arrow glide__arrow--right"
+        data-glide-dir=">"
+        onClick={onClick}
+        style={{
+          zIndex: "2",
+        }}
+      >
+        <i className="bi bi-chevron-right"></i>
+      </button>
+    );
+  }
+const productImg= product.img
   return (
-    <div className="product-gallery">
-      <div className="single-image-wrapper">
-        <img src={`/${activeImg.img}`} id="single-image" alt="" />
-      </div>
-      <div className="product-thumb">
-        <div className="glide__track" data-glide-el="track">
-          <ol className="gallery-thumbs glide__slides">
-            <Slider {...sliderSettings}>
-              {productsData[0].img.thumbs.map((itemImg, index) => (
-                <li
-                  className="glide__slide glide__slide--active"
-                  key={index}
-                  onClick={() =>
-                    setActiveImg({
-                      img: productsData[0].img.thumbs[index],
-                      imgIndex: index,
-                    })
-                  }
-                >
-                  <img
-                    src={`/${itemImg}`}
-                    alt=""
-                    className={`img-fluid ${
-                      activeImg.imgIndex === index ? "active" : ""
-                    } `}
-                  />
-                </li>
-              ))}
-            </Slider>
-          </ol>
-        </div>
-        <div className="glide__arrows" data-glide-el="controls">
-          <button
-            className="glide__arrow glide__arrow--left"
-            data-glide-dir="<"
-          >
-            <i className="bi bi-chevron-left"></i>
-          </button>
-          <button
-            className="glide__arrow glide__arrow--right"
-            data-glide-dir=">"
-          >
-            <i className="bi bi-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+    <>
+      {product && product.img && product.img[indexValue] && (
+        <img src={product.img[indexValue]} alt="" />
+      )}
+        
+
+    </>
   );
 };
+
 export default Gallery;
