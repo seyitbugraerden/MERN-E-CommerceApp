@@ -66,5 +66,20 @@ router.delete("/:productId", async (req, res) => {
   }
 });
 
+// Ürünleri İsme Göre Arayalım
+
+router.get("/search/:productName", async (req,res)=>{
+  try {
+    const productName = req.params.productName;
+    const products = await Product.find({
+      name : {$regex:productName, $options : "i"} // regex ile mongodb'deki verilerin her harfinde arama yapılabilmesi sağlanıyor. "i" ile büyük küçük harf fark etmeden aramasını istedik.
+    })
+    res.status(200).json(products)
+  } catch (error) {
+    res.status(500).json({error : 'Server Issues'})
+  }
+})
+
+
 //export etmemiz gerekli!
 module.exports = router;
