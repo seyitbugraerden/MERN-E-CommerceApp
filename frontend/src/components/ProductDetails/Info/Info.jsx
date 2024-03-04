@@ -1,17 +1,23 @@
 import { useParams } from "react-router-dom";
 import "./Info.css";
 import { useEffect, useState } from "react";
-import {InputNumber} from "antd"
+import { useContext } from "react";
+import { CartContext } from "../../../context/CartProvider";
+import { InputNumber } from "antd";
 
 const Info = () => {
+  const { addToCart, cartItems } = useContext(CartContext);
   const [productData, setProductData] = useState([]);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-  const [quantity, setQuantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
+
+  const filteredCart = cartItems.find(
+    (cartItem) => cartItem._id == productData._id
+  );
+
   const params = useParams();
   const productId = params.id;
-
-  console.log(productData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,9 +64,8 @@ const Info = () => {
         <s className="old-price">{productData.price?.discount}%</s>
         <strong className="new-price">{productData.price?.current} TL</strong>
       </div>
-      <p className="product-description">
-        {productData.description}
-      </p>
+      <p className="product-description"  dangerouslySetInnerHTML={{__html: productData.description}}>
+        </p>
       <form className="variations-form">
         <div className="variations">
           <div className="colors">
@@ -100,7 +105,9 @@ const Info = () => {
                   <span
                     key={index}
                     className={`${item === selectedSize ? "active" : ""}`}
-                    onClick={()=>{setSelectedSize(item)}}
+                    onClick={() => {
+                      setSelectedSize(item);
+                    }}
                   >
                     {item}
                   </span>
@@ -109,11 +116,24 @@ const Info = () => {
             </div>
           </div>
           <div className="cart-button">
-          <InputNumber min={1} max={1} value={quantity} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+            <InputNumber
+              min={1}
+              max={1}
+              value={quantity}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
             <button
               className="btn btn-lg btn-primary"
               id="add-to-cart"
               type="button"
+              onClick={() => {
+                addToCart(productData);
+              }}
+              disabled={filteredCart}
             >
               Add to cart
             </button>
