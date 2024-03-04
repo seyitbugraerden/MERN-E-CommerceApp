@@ -102,9 +102,8 @@ function ProductPage() {
         ]);
         const productsWithCategories = productsData.map((product) => {
           const categoryId = product.category;
-          const category = categoriesData.find(
-            (item) => (item._id = categoryId)
-          );
+          const category = categoriesData.find((item)=> item._id == categoryId)
+          console.log(category)
           return {
             ...product,
             categoryName: category ? category.name : "",
