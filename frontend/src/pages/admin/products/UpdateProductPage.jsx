@@ -1,5 +1,5 @@
 import { Input, Form, message, Spin, InputNumber, Select, Button } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
@@ -7,6 +7,8 @@ import ReactQuill from "react-quill";
 function UpdateProductPage() {
   const [loading, setLoading] = useState(false);
   const [productData, setProductData] = useState({});
+  const [categoryData, setCategoryData] = useState([])
+  const [categoryIdItem, setCategoryIdItem] = useState("")
   const navigate = useNavigate();
   const params = useParams();
   const [form] = Form.useForm();
@@ -48,7 +50,23 @@ function UpdateProductPage() {
     };
     fetchData();
   }, [form, productId]);
-
+  const fetchCategories = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/categories`);
+      if (response.ok) {
+        const data = await response.json();
+        setCategoryData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
   const onFinish = async (values) => {
     try {
       setLoading(true);
@@ -134,17 +152,24 @@ function UpdateProductPage() {
         </Form.Item>
 
         <Form.Item
-          label="Product Category"
-          name="category"
-          rules={[
-            {
-              required: true,
-              message: "Please select the product category",
-            },
-          ]}
-        >
-          <Select />
-        </Form.Item>
+  label="Product Category"
+  name="category"
+  rules={[
+    {
+      required: true,
+      message: "Please select the product category",
+    },
+  ]}
+>
+  <Select>
+    {categoryData.map((item) => (
+      <Select.Option key={item._id} value={item.value}>
+        {item.name}
+      </Select.Option>
+    ))}
+  </Select>
+</Form.Item>
+
 
         <Form.Item
           label="Product Images (Links)"
