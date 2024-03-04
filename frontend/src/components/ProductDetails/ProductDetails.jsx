@@ -41,7 +41,7 @@ const ProductDetails = () => {
               <Info />
             </main>
           </div>
-          <Tabs />
+          <Tabs productData={productData} />
         </div>
       </div>
     </section>
