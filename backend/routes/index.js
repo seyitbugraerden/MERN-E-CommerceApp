@@ -8,11 +8,13 @@ const productRoute = require("./products");
 const categoryRoute = require("./categories");
 const authRoute = require("./auth");
 const couponRoute = require("./coupons");
+const paymentRoute = require("./payment")
 
 router.use("/categories", categoryRoute);
 router.use("/products", productRoute);
 router.use("/auth", authRoute);
 router.use("/coupons", couponRoute);
+router.use("/payment",paymentRoute)
 
 //export etmemiz gerekli!
 module.exports = router;

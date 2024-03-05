@@ -28,7 +28,6 @@ const Search = ({ isSearchShow, setIsSearchShow }) => {
   useEffect(() => {
     fetchCategories();
   }, [inputValue]);
-  console.log(searchedValue);
   return (
     <div className={`modal-search ${isSearchShow ? "show" : ""} `}>
       <div className="modal-wrapper">
