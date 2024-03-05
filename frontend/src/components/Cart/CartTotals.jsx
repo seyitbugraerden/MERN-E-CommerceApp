@@ -52,13 +52,14 @@ const CartTotals = ({ coupon }) => {
             <th>Total</th>
             <td>
               <strong id="cart-total">
+              $
                 {coupon
                   ? `${(
                       cartTotals -
                       cartTotals * (coupon.discountPercent / 100)
                     ).toFixed(2)}`
                   : `${cartTotals}`}
-              </strong>
+              </strong> 
             </td>
           </tr>
         </tbody>

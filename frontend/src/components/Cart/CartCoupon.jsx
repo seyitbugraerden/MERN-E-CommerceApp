@@ -28,7 +28,7 @@ const CartCoupon = ({ onCouponSubmit }) => {
   const handleSubmit = () => {
     const foundCoupon = coupons.find((coupon) => coupon.code === value);
     if (foundCoupon) {
-      message.success(`Kupon Başarılı %${foundCoupon.discountPercent} İndirim`);
+      message.success(`%${foundCoupon.discountPercent} İndirim Kazandınız`);
       // foundCoupon değerini dışarıya gönder
       onCouponSubmit(foundCoupon);
     } else {
